@@ -7,17 +7,19 @@ function App() {
   
   const [name, setName] = useState('');
 
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const previousName = useRef<string>();
 
-  const focusInput = () => {
-    inputRef.current?.focus();
-  }
+  useEffect(()=>{
+    previousName.current = name;
+
+  }, [name])
+  
   return (
     <>
       <div className="card" style={{display:"flex", alignItems: "center", flexDirection: 'column'}}>
-        <input ref={inputRef} value={name} onChange={(e)=> setName(e.target.value)}/>
+        <input value={name} onChange={(e)=> setName(e.target.value)}/>
         <p>Hello! My name is {name}</p>
-        <button onClick={focusInput}> Focus Input</button>
+        <p>and my name was {previousName.current}</p>
       </div>
     </>
   );
