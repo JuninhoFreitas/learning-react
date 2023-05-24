@@ -1,48 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 
-type Post = {
-  title: 'string';
-  id: 'string';
-}
+
 
 function App() {
-  const [items, setItems] = useState([]);
-  const [fetchFrom, setFetchFrom] = useState("posts");
+  
+  const [name, setName] = useState('');
 
-  useEffect(() => {
-    const fetchResourceTypes = async () => {
-      const response = await fetch(`https://jsonplaceholder.typicode.com/${fetchFrom}`);
-      const responseJSON = await response.json();
-      setItems(responseJSON)
-    };
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-    // fetchResourceTypes()
-  }, [fetchFrom]);
-
-  useEffect(()=>{
-    console.log('componentDidMount')
-
-    return () =>{
-      console.log('componentWillUnmount')
-    }
-  }, [])
-
-  const changeFetch = (source: string) => {
-    setFetchFrom(source);
-  };
-
+  const focusInput = () => {
+    inputRef.current?.focus();
+  }
   return (
     <>
-      <div></div>
-      <h1>Vite + React</h1>
-      <div className="card" style={{display:"flex", alignItems: "center"}}>
-        <p>Source of study: {fetchFrom}</p>
-        <button onClick={() => changeFetch("posts")}> Posts </button>
-        <button onClick={() => changeFetch("comments")}> Comments </button>
-        <button onClick={() => changeFetch("todos")}> Todos </button>
+      <div className="card" style={{display:"flex", alignItems: "center", flexDirection: 'column'}}>
+        <input ref={inputRef} value={name} onChange={(e)=> setName(e.target.value)}/>
+        <p>Hello! My name is {name}</p>
+        <button onClick={focusInput}> Focus Input</button>
       </div>
-      {items.map((item:Post) => <p key={item.id}>{item.title}</p>)}
     </>
   );
 }
